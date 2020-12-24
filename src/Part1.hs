@@ -15,7 +15,7 @@ module Part1
 --
 -- На вход функции подаются неотрицательные числа
 prob1 :: Int -> Int
-prob1 x = (x * 3 + 123) `mod` 65537
+prob1 x = mod (x*3 + 123) 65537
 
 
 ------------------------------------------------------------
@@ -25,9 +25,8 @@ prob1 x = (x * 3 + 123) `mod` 65537
 -- * нечётные числа увеличивает втрое и добавляет единицу
 -- * чётные числа делит на два
 prob2 :: Integer -> Integer
-prob2 n = if n `mod` 2 == 0
-    then n `div` 2
-    else n * 3 + 1
+prob2 n = if n `mod` 2 == 1 then n*3 + 1 else n `div` 2
+
 
 ------------------------------------------------------------
 -- PROBLEM #3
@@ -56,6 +55,18 @@ prob3 step n = recursive n 0
     recursive :: Integer -> Integer -> Integer
     recursive 1 i = i
     recursive n i = recursive (step n) (i+1)
+--  count = 0
+--  until (n!=1) $ do
+--    count += 1
+--    n = step n
+
+--
+--do
+--  let i = 0
+--  unless (n!=1) $ do
+--    let i = i + 1
+--    n = step n
+--  return i;
 
 
 ------------------------------------------------------------
@@ -73,14 +84,18 @@ prob3 step n = recursive n 0
 --
 -- Число n по модулю не превосходит 10^5
 prob4 :: Integer -> Integer
-prob4 n
-  | n == (-1) = 0
-  | n < 0 = prob4 (-n - 2) * (if even n then 1 else -1)
-  | otherwise = prob4iter n 0 1
+prob4 n = fib 1 1 n 
+ where 
+  fib :: Integer -> Integer -> Integer -> Integer
+  fib a b count 
+    | count == 0 && n >= 0 = a
+    | count == 0 && n < 0 = b
+    | otherwise = fib b c d 
+      where 
+       c = if n >= 0 then a + b else a - b
+       d = if n > 0 then count - 1 else count + 1
+    
 
-prob4iter :: Integer -> Integer -> Integer -> Integer
-prob4iter 0 a b = b
-prob4iter i a b = prob4iter (i - 1) b (a + b)
 
 ------------------------------------------------------------
 -- PROBLEM #5
